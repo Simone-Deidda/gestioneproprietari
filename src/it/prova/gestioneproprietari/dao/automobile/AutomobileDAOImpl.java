@@ -7,10 +7,11 @@ import javax.persistence.EntityManager;
 import it.prova.gestioneproprietari.model.Automobile;
 
 public class AutomobileDAOImpl implements AutomobileDAO {
+	private EntityManager entityManager;
 
 	@Override
 	public List<Automobile> list() throws Exception {
-		return null;
+		return entityManager.createQuery("FROM Automobile", Automobile.class).getResultList();
 	}
 
 	@Override
@@ -32,6 +33,7 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 }

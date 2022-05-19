@@ -7,10 +7,11 @@ import javax.persistence.EntityManager;
 import it.prova.gestioneproprietari.model.Proprietario;
 
 public class ProprietarioDAOImpl implements ProprietarioDAO {
-
+	private EntityManager entityManager;
+	
 	@Override
 	public List<Proprietario> list() throws Exception {
-		return null;
+		return entityManager.createQuery("FROM Proprietario", Proprietario.class).getResultList();
 	}
 
 	@Override
@@ -32,6 +33,7 @@ public class ProprietarioDAOImpl implements ProprietarioDAO {
 
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 }

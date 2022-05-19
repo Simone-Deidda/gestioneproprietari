@@ -17,6 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "proprietario")
 public class Proprietario {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -29,8 +30,8 @@ public class Proprietario {
 	private String codiceFiscale;
 	@Column(name = "dataNascita")
 	private Date dataNascita;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "automobile")
-	private Set<Automobile> automobili = new HashSet<>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proprietario")
+	private Set<Automobile> automobili = new HashSet<Automobile>();
 
 	public Proprietario() {
 	}
