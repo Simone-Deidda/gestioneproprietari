@@ -33,6 +33,11 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 
 	@Override
 	public void delete(Automobile o) throws Exception {
+		if (o == null) {
+			throw new Exception("Problema valore in input");
+		}
+
+		entityManager.remove(entityManager.merge(o));
 	}
 
 	@Override

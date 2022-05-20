@@ -73,7 +73,23 @@ public class AutomobileServiceImpl implements AutomobileService {
 	}
 
 	@Override
-	public void rimuovi(Long idAutomobileInstance) throws Exception {
+	public void rimuovi(Automobile automobileInstance) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			entityManager.getTransaction().begin();
+
+			automobileDAO.setEntityManager(entityManager);
+			automobileDAO.delete(automobileInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 }

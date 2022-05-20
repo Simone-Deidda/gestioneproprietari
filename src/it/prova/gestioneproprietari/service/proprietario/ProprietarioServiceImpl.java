@@ -74,6 +74,22 @@ public class ProprietarioServiceImpl implements ProprietarioService {
 
 	@Override
 	public void rimuovi(Proprietario proprietarioInstance) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			entityManager.getTransaction().begin();
+
+			proprietarioDAO.setEntityManager(entityManager);
+			proprietarioDAO.delete(proprietarioInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 }
