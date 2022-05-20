@@ -43,6 +43,22 @@ public class ProprietarioServiceImpl implements ProprietarioService {
 
 	@Override
 	public void inserisciNuovo(Proprietario proprietarioInstance) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			entityManager.getTransaction().begin();
+
+			proprietarioDAO.setEntityManager(entityManager);
+			proprietarioDAO.insert(proprietarioInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override

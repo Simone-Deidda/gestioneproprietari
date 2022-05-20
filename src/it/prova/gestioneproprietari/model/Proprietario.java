@@ -36,8 +36,7 @@ public class Proprietario {
 	public Proprietario() {
 	}
 
-	public Proprietario(Long id, String nome, String cognome, String codiceFiscale, Date dataNascita) {
-		this.id = id;
+	public Proprietario(String nome, String cognome, String codiceFiscale, Date dataNascita) {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.codiceFiscale = codiceFiscale;

@@ -25,6 +25,10 @@ public class ProprietarioDAOImpl implements ProprietarioDAO {
 
 	@Override
 	public void insert(Proprietario o) throws Exception {
+		if (o == null) {
+			throw new Exception("Problema valore in input");
+		}
+		entityManager.persist(o);
 	}
 
 	@Override

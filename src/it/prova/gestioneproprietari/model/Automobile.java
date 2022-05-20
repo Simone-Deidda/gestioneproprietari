@@ -35,8 +35,7 @@ public class Automobile {
 	public Automobile() {
 	}
 
-	public Automobile(Long id, String marca, String modello, String targa, Integer annoImmatricolazione) {
-		this.id = id;
+	public Automobile(String marca, String modello, String targa, Integer annoImmatricolazione) {
 		this.marca = marca;
 		this.modello = modello;
 		this.targa = targa;
