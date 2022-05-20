@@ -21,7 +21,7 @@ public interface AutomobileService {
 	// operazioni di Automobile
 	public List<Automobile> listAllAutomobiliConInizialeCodiceFiacaleDeiProprietari(String inizialeCodiceFiscale) throws Exception;
 	
-	public List<Automobile> automobiliConErrori(Date dataInput); // proprietari minorenni
+	public List<Automobile> automobiliConErrori(); // proprietari minorenni
 
 	//per injection
 	public void setAutomobileDAO(AutomobileDAO automobileDAO);

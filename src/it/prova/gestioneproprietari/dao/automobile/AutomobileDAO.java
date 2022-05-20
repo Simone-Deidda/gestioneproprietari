@@ -9,6 +9,6 @@ import it.prova.gestioneproprietari.model.Automobile;
 public interface AutomobileDAO extends IBaseDAO<Automobile> {
 	public List<Automobile> listAllByCodiceFiscaleProprietarioStartsWith(String inizialeCodiceFiscale);
 
-	public List<Automobile> listAllByProprietariMinorenni(Date data);
+	public List<Automobile> listAllByProprietariMinorenni();
 
 }

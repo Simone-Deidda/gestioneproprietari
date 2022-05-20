@@ -59,11 +59,10 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 	}
 
 	@Override
-	public List<Automobile> listAllByProprietariMinorenni(Date data) {
-		//TypedQuery<Automobile> query = entityManager.createQuery("SELECT a FROM	Automobile a JOIN a.proprietario p WHERE p.dataNascita > subdate(curdate(), interval 18 year);", Automobile.class);
-		TypedQuery<Automobile> query = entityManager.createQuery(
-			"SELECT a FROM Automobile a JOIN a.proprietario p WHERE p.dataNascita > ?1", Automobile.class);
-		return query.setParameter(1, data).getResultList();
+	public List<Automobile> listAllByProprietariMinorenni() {
+		//TypedQuery<Automobile> query = entityManager.createQuery("SELECT a FROM sAutomobile a JOIN a.proprietario p WHERE p.dataNascita > SUBDATE(NOW(), INTERVAL 18 YEAR)", Automobile.class);
+		TypedQuery<Automobile> query = entityManager.createQuery("SELECT a FROM Automobile a JOIN a.proprietario p WHERE p.dataNascita >= '2004-01-01'", Automobile.class);
+		return query.getResultList();
 	}
 
 	@Override

@@ -130,13 +130,13 @@ public class AutomobileServiceImpl implements AutomobileService {
 	}
 
 	@Override
-	public List<Automobile> automobiliConErrori(Date dataInput) {
+	public List<Automobile> automobiliConErrori() {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 
 		try {
 			automobileDAO.setEntityManager(entityManager);
 
-			return automobileDAO.listAllByProprietariMinorenni(dataInput);
+			return automobileDAO.listAllByProprietariMinorenni();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

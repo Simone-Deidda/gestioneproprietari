@@ -309,7 +309,7 @@ public class TestGestioneProprietari {
 		automobileService.inserisciNuovo(nuovaAutomobile2);
 
 		List<Automobile> listaAutomobiliTrovate = automobileService
-				.automobiliConErrori(new SimpleDateFormat("dd-MM-yyyy").parse("10-03-2004"));
+				.automobiliConErrori();
 		System.out.println(listaAutomobiliTrovate.size());
 		if (listaAutomobiliTrovate.size() < 2) {
 			throw new RuntimeException(
