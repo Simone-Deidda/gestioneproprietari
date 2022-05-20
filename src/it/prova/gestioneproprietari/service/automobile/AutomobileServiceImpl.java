@@ -1,5 +1,6 @@
 package it.prova.gestioneproprietari.service.automobile;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -113,13 +114,35 @@ public class AutomobileServiceImpl implements AutomobileService {
 	// <<<<<<<<<< Operazioni di Automobile >>>>>>>>>>
 	
 	@Override
-	public List<Automobile> listAllAutomobiliConInizialeCodiceFiacaleDeiProprietari(String inizialeCodiceFiscale) {
-		return null;
+	public List<Automobile> listAllAutomobiliConInizialeCodiceFiacaleDeiProprietari(String inizialeCodiceFiscale) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			automobileDAO.setEntityManager(entityManager);
+
+			return automobileDAO.listAllByCodiceFiscaleProprietarioStartsWith(inizialeCodiceFiscale);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
-	public List<Automobile> automobiliConErrori() {
-		return null;
+	public List<Automobile> automobiliConErrori(Date dataInput) {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			automobileDAO.setEntityManager(entityManager);
+
+			return automobileDAO.listAllByProprietariMinorenni(dataInput);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 }

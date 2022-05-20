@@ -1,8 +1,10 @@
 package it.prova.gestioneproprietari.dao.automobile;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import it.prova.gestioneproprietari.model.Automobile;
 
@@ -50,13 +52,18 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 	// <<<<<<<<<< Operazioni di Automobile >>>>>>>>>>
 
 	@Override
-	public List<Automobile> liatAllByCodiceFiscaleProprietarioStartsWith() {
-		return null;
+	public List<Automobile> listAllByCodiceFiscaleProprietarioStartsWith(String inizialeCodiceFiscale) {
+		TypedQuery<Automobile> query = entityManager.createQuery(
+				"SELECT a FROM Automobile a JOIN a.proprietario p WHERE p.codiceFiscale LIKE ?1", Automobile.class);
+		return query.setParameter(1, inizialeCodiceFiscale + "%").getResultList();
 	}
 
 	@Override
-	public List<Automobile> liatAllByProprietariMinorenni() {
-		return null;
+	public List<Automobile> listAllByProprietariMinorenni(Date data) {
+		//TypedQuery<Automobile> query = entityManager.createQuery("SELECT a FROM	Automobile a JOIN a.proprietario p WHERE p.dataNascita > subdate(curdate(), interval 18 year);", Automobile.class);
+		TypedQuery<Automobile> query = entityManager.createQuery(
+			"SELECT a FROM Automobile a JOIN a.proprietario p WHERE p.dataNascita > ?1", Automobile.class);
+		return query.setParameter(1, data).getResultList();
 	}
 
 	@Override

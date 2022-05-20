@@ -1,6 +1,7 @@
 package it.prova.gestioneproprietari.test;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import it.prova.gestioneproprietari.dao.EntityManagerUtil;
@@ -55,9 +56,17 @@ public class TestGestioneProprietari {
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
-			testRicercaQuantiProprietariConAutomobileImmatricolataDa(proprietarioService, automobileService);
+			testContaQuantiProprietariConAutomobileImmatricolataDa(proprietarioService, automobileService);
 			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
 					+ " elementi.");
+
+			testRicercaQuanteAutomobiliDatoInizialeCodiceFiscaleProprietario(proprietarioService, automobileService);
+			System.out.println(
+					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
+			
+			testRicercaQuanteAutomobiliConErroriDiEtaProprietari(proprietarioService, automobileService);
+			System.out.println(
+					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -214,12 +223,14 @@ public class TestGestioneProprietari {
 		System.out.println("<<<<<<<< testCercaAutomobilePerId: FINE >>>>>>>>\n");
 	}
 
-	public static void testRicercaQuantiProprietariConAutomobileImmatricolataDa(ProprietarioService proprietarioService,
+	public static void testContaQuantiProprietariConAutomobileImmatricolataDa(ProprietarioService proprietarioService,
 			AutomobileService automobileService) throws Exception {
+		System.out.println("\n<<<<<<<< testContaProprietarioConAutomobileImmatricolataDa: INIZIO >>>>>>>>");
+
 		List<Proprietario> listaProprietari = proprietarioService.listAllProprietari();
 		if (listaProprietari.isEmpty())
 			throw new RuntimeException(
-					"testRicercaProprietarioConAutomobileImmatricolataDa fallito: non ci sono proprietari a cui collegarci.");
+					"testContaProprietarioConAutomobileImmatricolataDa fallito: non ci sono proprietari a cui collegarci.");
 
 		Integer dataImmatricolazioneMinima = 2017;
 		Proprietario primoProprietario = listaProprietari.get(0);
@@ -234,11 +245,81 @@ public class TestGestioneProprietari {
 
 		Integer totaleProprietariTrovati = proprietarioService
 				.contaQuantiProprietariConAutomobileImmatricolataDa(dataImmatricolazioneMinima);
-		
+
 		if (totaleProprietariTrovati < 2) {
 			throw new RuntimeException(
-					"testRicercaProprietarioConAutomobileImmatricolataDa fallito: numero della ricerca non corretto.");
+					"testContaProprietarioConAutomobileImmatricolataDa fallito: numero della ricerca non corretto.");
 		}
 
+		automobileService.rimuovi(nuovAutomobile);
+		automobileService.rimuovi(nuovAutomobile2);
+
+		System.out.println("\n<<<<<<<< testContaProprietarioConAutomobileImmatricolataDa: FINE >>>>>>>>");
 	}
+
+	public static void testRicercaQuanteAutomobiliDatoInizialeCodiceFiscaleProprietario(
+			ProprietarioService proprietarioService, AutomobileService automobileService) throws Exception {
+
+		String inizialeCodiceFiscale = "AB";
+		Proprietario nuovoProprietario = new Proprietario("nome100", "cognome100", inizialeCodiceFiscale + "C14A14",
+				new Date());
+		Proprietario nuovoProprietario2 = new Proprietario("nome101", "cognome101", inizialeCodiceFiscale + "Z15B14",
+				new Date());
+
+		Automobile nuovaAutomobile = new Automobile("marca100", "modello100", "QQ777QQ", 2000);
+		nuovaAutomobile.setProprietario(nuovoProprietario);
+		proprietarioService.inserisciNuovo(nuovoProprietario);
+		automobileService.inserisciNuovo(nuovaAutomobile);
+
+		Automobile nuovaAutomobile2 = new Automobile("marca100", "modello100", "QQ777QQ", 2000);
+		nuovaAutomobile2.setProprietario(nuovoProprietario2);
+		proprietarioService.inserisciNuovo(nuovoProprietario2);
+		automobileService.inserisciNuovo(nuovaAutomobile2);
+
+		List<Automobile> listaAutomobiliTrovate = automobileService
+				.listAllAutomobiliConInizialeCodiceFiacaleDeiProprietari(inizialeCodiceFiscale);
+		System.out.println(listaAutomobiliTrovate.size());
+		if (listaAutomobiliTrovate.size() < 2) {
+			throw new RuntimeException(
+					"testRicercaQuanteAutomobiliDatoInizialeCodiceFiscaleProprietario fallito: numero della ricerca non corretto.");
+		}
+
+		automobileService.rimuovi(nuovaAutomobile);
+		automobileService.rimuovi(nuovaAutomobile2);
+		proprietarioService.rimuovi(nuovoProprietario);
+		proprietarioService.rimuovi(nuovoProprietario2);
+	}
+
+	public static void testRicercaQuanteAutomobiliConErroriDiEtaProprietari(
+			ProprietarioService proprietarioService, AutomobileService automobileService) throws Exception {
+
+		Proprietario nuovoProprietario = new Proprietario("nome1000", "cognome1000", "ZZC14A14",
+				new SimpleDateFormat("dd-MM-yyyy").parse("10-03-2020"));
+		Proprietario nuovoProprietario2 = new Proprietario("nome1001", "cognome1001", "PPZ15B14",
+				new SimpleDateFormat("dd-MM-yyyy").parse("10-03-2018"));
+		
+		Automobile nuovaAutomobile = new Automobile("marca1000", "modello1000", "QQ777QQ", 2000);
+		nuovaAutomobile.setProprietario(nuovoProprietario);
+		proprietarioService.inserisciNuovo(nuovoProprietario);
+		automobileService.inserisciNuovo(nuovaAutomobile);
+
+		Automobile nuovaAutomobile2 = new Automobile("marca1010", "modello1010", "JJ888JJ", 2000);
+		nuovaAutomobile2.setProprietario(nuovoProprietario2);
+		proprietarioService.inserisciNuovo(nuovoProprietario2);
+		automobileService.inserisciNuovo(nuovaAutomobile2);
+
+		List<Automobile> listaAutomobiliTrovate = automobileService
+				.automobiliConErrori(new SimpleDateFormat("dd-MM-yyyy").parse("10-03-2004"));
+		System.out.println(listaAutomobiliTrovate.size());
+		if (listaAutomobiliTrovate.size() < 2) {
+			throw new RuntimeException(
+					"testRicercaQuanteAutomobiliConErroriDiEtaProprietari fallito: numero della ricerca non corretto.");
+		}
+
+		automobileService.rimuovi(nuovaAutomobile);
+		automobileService.rimuovi(nuovaAutomobile2);
+		proprietarioService.rimuovi(nuovoProprietario);
+		proprietarioService.rimuovi(nuovoProprietario2);
+	}
+
 }
