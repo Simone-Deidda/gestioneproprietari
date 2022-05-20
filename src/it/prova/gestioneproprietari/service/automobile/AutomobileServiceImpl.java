@@ -16,6 +16,8 @@ public class AutomobileServiceImpl implements AutomobileService {
 		this.automobileDAO = automobileDAO;
 	}
 
+	// <<<<<<<<<< Operazioni CRUD >>>>>>>>>>
+	
 	@Override
 	public List<Automobile> listAllAutomobili() throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
@@ -106,6 +108,18 @@ public class AutomobileServiceImpl implements AutomobileService {
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
+	}
+
+	// <<<<<<<<<< Operazioni di Automobile >>>>>>>>>>
+	
+	@Override
+	public List<Automobile> listAllAutomobiliConInizialeCodiceFiacaleDeiProprietari(String inizialeCodiceFiscale) {
+		return null;
+	}
+
+	@Override
+	public List<Automobile> automobiliConErrori() {
+		return null;
 	}
 
 }

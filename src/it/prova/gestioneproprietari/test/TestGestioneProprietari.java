@@ -55,6 +55,10 @@ public class TestGestioneProprietari {
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
+			testRicercaQuantiProprietariConAutomobileImmatricolataDa(proprietarioService, automobileService);
+			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
+					+ " elementi.");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -210,4 +214,31 @@ public class TestGestioneProprietari {
 		System.out.println("<<<<<<<< testCercaAutomobilePerId: FINE >>>>>>>>\n");
 	}
 
+	public static void testRicercaQuantiProprietariConAutomobileImmatricolataDa(ProprietarioService proprietarioService,
+			AutomobileService automobileService) throws Exception {
+		List<Proprietario> listaProprietari = proprietarioService.listAllProprietari();
+		if (listaProprietari.isEmpty())
+			throw new RuntimeException(
+					"testRicercaProprietarioConAutomobileImmatricolataDa fallito: non ci sono proprietari a cui collegarci.");
+
+		Integer dataImmatricolazioneMinima = 2017;
+		Proprietario primoProprietario = listaProprietari.get(0);
+		Proprietario secondoProprietario = listaProprietari.get(1);
+
+		Automobile nuovAutomobile = new Automobile("marca10", "modello10", "AA111AA", 2022);
+		nuovAutomobile.setProprietario(primoProprietario);
+		automobileService.inserisciNuovo(nuovAutomobile);
+		Automobile nuovAutomobile2 = new Automobile("marca11", "modello11", "BB222BB", 2020);
+		nuovAutomobile2.setProprietario(secondoProprietario);
+		automobileService.inserisciNuovo(nuovAutomobile2);
+
+		Integer totaleProprietariTrovati = proprietarioService
+				.contaQuantiProprietariConAutomobileImmatricolataDa(dataImmatricolazioneMinima);
+		
+		if (totaleProprietariTrovati < 2) {
+			throw new RuntimeException(
+					"testRicercaProprietarioConAutomobileImmatricolataDa fallito: numero della ricerca non corretto.");
+		}
+
+	}
 }

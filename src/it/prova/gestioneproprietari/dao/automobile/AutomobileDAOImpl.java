@@ -9,6 +9,8 @@ import it.prova.gestioneproprietari.model.Automobile;
 public class AutomobileDAOImpl implements AutomobileDAO {
 	private EntityManager entityManager;
 
+	// <<<<<<<<<< Operazioni CRUD >>>>>>>>>>
+
 	@Override
 	public List<Automobile> list() throws Exception {
 		return entityManager.createQuery("FROM Automobile", Automobile.class).getResultList();
@@ -45,9 +47,20 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 		entityManager.remove(entityManager.merge(o));
 	}
 
+	// <<<<<<<<<< Operazioni di Automobile >>>>>>>>>>
+
+	@Override
+	public List<Automobile> liatAllByCodiceFiscaleProprietarioStartsWith() {
+		return null;
+	}
+
+	@Override
+	public List<Automobile> liatAllByProprietariMinorenni() {
+		return null;
+	}
+
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
-
 }

@@ -1,5 +1,6 @@
 package it.prova.gestioneproprietari.service.proprietario;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,8 @@ public class ProprietarioServiceImpl implements ProprietarioService {
 	public void setProprietarioDAO(ProprietarioDAO proprietarioDAO) {
 		this.proprietarioDAO = proprietarioDAO;
 	}
+	
+	// <<<<<<<<<< Operazioni CRUD >>>>>>>>>>
 
 	@Override
 	public List<Proprietario> listAllProprietari() throws Exception {
@@ -101,6 +104,24 @@ public class ProprietarioServiceImpl implements ProprietarioService {
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+	
+	// <<<<<<<<<< Operazioni di Proprietario >>>>>>>>>>
+
+	@Override
+	public Integer contaQuantiProprietariConAutomobileImmatricolataDa(Integer dataImmatricolazione) {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			proprietarioDAO.setEntityManager(entityManager);
+
+			return proprietarioDAO.countAllWithDataImmatricolazioneAutomobileGreaterThen(dataImmatricolazione);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
