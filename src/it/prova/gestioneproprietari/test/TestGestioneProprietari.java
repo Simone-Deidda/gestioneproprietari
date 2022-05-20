@@ -23,11 +23,19 @@ public class TestGestioneProprietari {
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
-			// testInserimentoProprietario(proprietarioService, automobileService);
+			testInserimentoProprietario(proprietarioService, automobileService);
 			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
 					+ " elementi.");
 
-			// testInserimentoAutomobile(proprietarioService, automobileService);
+			testInserimentoAutomobile(proprietarioService, automobileService);
+			System.out.println(
+					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
+
+			testCercaProprietarioPerId(proprietarioService, automobileService);
+			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
+					+ " elementi.");
+
+			testCercaAutomobilePerId(proprietarioService, automobileService);
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
@@ -39,11 +47,11 @@ public class TestGestioneProprietari {
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
-			testCercaProprietarioPerId(proprietarioService, automobileService);
+			testModificaProprietario(proprietarioService, automobileService);
 			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
 					+ " elementi.");
 
-			testCercaAutomobilePerId(proprietarioService, automobileService);
+			testModificaAutomobile(proprietarioService, automobileService);
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
@@ -139,16 +147,11 @@ public class TestGestioneProprietari {
 
 		Proprietario nuovoProprietario = new Proprietario("Pino", "Pino", "PPPNNN11C98I",
 				new SimpleDateFormat("dd-MM-yyyy").parse("11-03-1998"));
-
 		proprietarioService.inserisciNuovo(nuovoProprietario);
-		System.out.println(nuovoProprietario);
-		System.out.println(proprietarioService.caricaSingoloProprietario(nuovoProprietario.getId()));
 
 		if (!proprietarioService.caricaSingoloProprietario(nuovoProprietario.getId()).equals(nuovoProprietario)) {
 			throw new RuntimeException("testCercaProprietarioPerId fallito.");
 		}
-
-		proprietarioService.rimuovi(nuovoProprietario);
 
 		System.out.println("<<<<<<<< testCercaProprietarioPerId: FINE >>>>>>>>\n");
 	}
@@ -164,7 +167,45 @@ public class TestGestioneProprietari {
 			throw new RuntimeException("testCercaAutomobilePerId fallito.");
 		}
 
-		automobileService.rimuovi(nuovaAutomobile);
+		System.out.println("<<<<<<<< testCercaAutomobilePerId: FINE >>>>>>>>\n");
+	}
+
+	public static void testModificaProprietario(ProprietarioService proprietarioService,
+			AutomobileService automobileService) throws Exception {
+		System.out.println("\n<<<<<<<< testModificaProprietario: INIZIO >>>>>>>>");
+
+		List<Proprietario> listaProprietari = proprietarioService.listAllProprietari();
+		if (listaProprietari.isEmpty())
+			throw new RuntimeException("testModificaProprietario fallito: non ci sono proprietari nel DB.");
+
+		String nuovoNome = "nuovonome";
+		Proprietario primoProprietario = listaProprietari.get(0);
+		primoProprietario.setNome(nuovoNome);
+
+		proprietarioService.aggiorna(primoProprietario);
+		if (!proprietarioService.caricaSingoloProprietario(primoProprietario.getId()).getNome().equals(nuovoNome)) {
+			throw new RuntimeException("testModificaProprietario fallito.");
+		}
+
+		System.out.println("<<<<<<<< testModificaProprietario: FINE >>>>>>>>\n");
+	}
+
+	public static void testModificaAutomobile(ProprietarioService proprietarioService,
+			AutomobileService automobileService) throws Exception {
+		System.out.println("\n<<<<<<<< testModificaAutomobile: INIZIO >>>>>>>>");
+
+		List<Automobile> listaAutomobili = automobileService.listAllAutomobili();
+		if (listaAutomobili.isEmpty())
+			throw new RuntimeException("testModificaAutomobile fallito: non ci sono automobili nel DB.");
+
+		String nuovaMarca = "nuovamarca";
+		Automobile primaAutomobile = listaAutomobili.get(0);
+		primaAutomobile.setMarca(nuovaMarca);
+
+		automobileService.aggiorna(primaAutomobile);
+		if (!automobileService.caricaSingolaAutomobile(primaAutomobile.getId()).getMarca().equals(nuovaMarca)) {
+			throw new RuntimeException("testModificaAutomobile fallito.");
+		}
 
 		System.out.println("<<<<<<<< testCercaAutomobilePerId: FINE >>>>>>>>\n");
 	}

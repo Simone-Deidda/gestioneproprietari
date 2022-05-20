@@ -21,6 +21,11 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 
 	@Override
 	public void update(Automobile o) throws Exception {
+		if (o == null) {
+			throw new Exception("Problema valore in input");
+		}
+
+		o = entityManager.merge(o);
 	}
 
 	@Override
