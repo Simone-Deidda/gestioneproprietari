@@ -34,7 +34,18 @@ public class AutomobileServiceImpl implements AutomobileService {
 
 	@Override
 	public Automobile caricaSingolaAutomobile(Long id) throws Exception {
-		return null;
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			automobileDAO.setEntityManager(entityManager);
+
+			return automobileDAO.get(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override

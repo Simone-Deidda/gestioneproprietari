@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "proprietario")
 public class Proprietario {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -106,8 +106,7 @@ public class Proprietario {
 			return false;
 		Proprietario other = (Proprietario) obj;
 		return Objects.equals(codiceFiscale, other.codiceFiscale) && Objects.equals(cognome, other.cognome)
-				&& Objects.equals(dataNascita, other.dataNascita) && Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome);
+				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome);
 	}
 
 	@Override

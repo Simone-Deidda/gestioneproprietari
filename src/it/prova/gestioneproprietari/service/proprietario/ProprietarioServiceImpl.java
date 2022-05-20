@@ -34,7 +34,18 @@ public class ProprietarioServiceImpl implements ProprietarioService {
 
 	@Override
 	public Proprietario caricaSingoloProprietario(Long id) throws Exception {
-		return null;
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			proprietarioDAO.setEntityManager(entityManager);
+
+			return proprietarioDAO.get(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
@@ -64,6 +75,5 @@ public class ProprietarioServiceImpl implements ProprietarioService {
 	@Override
 	public void rimuovi(Proprietario proprietarioInstance) throws Exception {
 	}
-
 
 }

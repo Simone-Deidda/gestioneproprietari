@@ -23,11 +23,19 @@ public class TestGestioneProprietari {
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
-			testInserimentoProprietario(proprietarioService, automobileService);
+			//testInserimentoProprietario(proprietarioService, automobileService);
+			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
+					+ " elementi.");
+
+			//testInserimentoAutomobile(proprietarioService, automobileService);
 			System.out.println(
-					"In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size() + " elementi.");
-			
-			testInserimentoAutomobile(proprietarioService, automobileService);
+					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
+
+			testCercaProprietarioPerId(proprietarioService, automobileService);
+			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
+					+ " elementi.");
+
+			testCercaAutomobilePerId(proprietarioService, automobileService);
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 
@@ -42,14 +50,15 @@ public class TestGestioneProprietari {
 			AutomobileService automobileService) throws Exception {
 		System.out.println("\n<<<<<<<< testInserimentoProprietario: INIZIO >>>>>>>>");
 
-		Proprietario nuovaProprietario = new Proprietario("Marco", "Marco", "MMMRRR10C99I", new SimpleDateFormat("dd-MM-yyyy").parse("10-03-1999"));
-		
+		Proprietario nuovaProprietario = new Proprietario("Marco", "Marco", "MMMRRR10C99I",
+				new SimpleDateFormat("dd-MM-yyyy").parse("10-03-1999"));
+
 		proprietarioService.inserisciNuovo(nuovaProprietario);
 
 		if (nuovaProprietario.getId() == null) {
 			throw new RuntimeException("testInserimentoProprietario fallito.");
 		}
-		
+
 		System.out.println("<<<<<<<< testInserimentoProprietario: FINE >>>>>>>>\n");
 	}
 
@@ -74,6 +83,37 @@ public class TestGestioneProprietari {
 		}
 
 		System.out.println("<<<<<<<< testInserimentoProprietario: FINE >>>>>>>>\n");
+	}
+
+	public static void testCercaProprietarioPerId(ProprietarioService proprietarioService,
+			AutomobileService automobileService) throws Exception {
+		System.out.println("\n<<<<<<<< testCercaProprietarioPerId: INIZIO >>>>>>>>");
+
+		Proprietario nuovoProprietario = new Proprietario("Pino", "Pino", "PPPNNN11C98I",
+				new SimpleDateFormat("dd-MM-yyyy").parse("11-03-1998"));
+
+		proprietarioService.inserisciNuovo(nuovoProprietario);
+		System.out.println(nuovoProprietario);
+		System.out.println(proprietarioService.caricaSingoloProprietario(nuovoProprietario.getId()));
+		
+		if (!proprietarioService.caricaSingoloProprietario(nuovoProprietario.getId())
+				.equals(nuovoProprietario)) {
+			throw new RuntimeException("testCercaProprietarioPerId fallito.");
+		}
+		System.out.println("<<<<<<<< testCercaProprietarioPerId: FINE >>>>>>>>\n");
+	}
+
+	public static void testCercaAutomobilePerId(ProprietarioService proprietarioService,
+			AutomobileService automobileService) throws Exception {
+		System.out.println("\n<<<<<<<< testCercaAutomobilePerId: INIZIO >>>>>>>>");
+
+		Automobile nuovaAutomobile = new Automobile("Fiat", "500", "JU258ED", 1960);
+
+		automobileService.inserisciNuovo(nuovaAutomobile);
+		if (!automobileService.caricaSingolaAutomobile(nuovaAutomobile.getId()).equals(nuovaAutomobile)) {
+			throw new RuntimeException("testCercaAutomobilePerId fallito.");
+		}
+		System.out.println("<<<<<<<< testCercaAutomobilePerId: FINE >>>>>>>>\n");
 	}
 
 }
